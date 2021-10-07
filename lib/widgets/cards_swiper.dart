@@ -23,7 +23,7 @@ class CardsSwiper extends StatelessWidget {
     return Container(
       width: double.infinity,
       height: size.height * 0.5,
-      color: Colors.blue,
+      //color: Colors.blue,
       child: Swiper(
         itemCount: movies.length,
         layout: SwiperLayout.STACK,
@@ -34,8 +34,8 @@ class CardsSwiper extends StatelessWidget {
           print(movie.fullPosterImg);
 
           return GestureDetector(
-            onTap: () => Navigator.pushNamed(context, 'detail',
-                arguments: 'movie-instace'),
+            onTap: () =>
+                Navigator.pushNamed(context, 'detail', arguments: movie),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20),
               child: FadeInImage(
