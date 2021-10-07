@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:third_project_moves/models/movie.dart';
 import 'package:third_project_moves/widgets/widgets.dart';
 
 class MovieSlider extends StatelessWidget {
+  final List<Movie> movies;
+  final String? title;
+
+  const MovieSlider({Key? key, required this.movies, this.title})
+      : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -10,20 +17,22 @@ class MovieSlider extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          if (this.title != null) SizedBox(height: 10),
           Padding(
               child: Text(
                 'Populares',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               padding: EdgeInsets.symmetric(horizontal: 20)),
+          SizedBox(height: 5),
           Expanded(
             child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: 20,
-              itemBuilder: (BuildContext context, int index) {
-                return _MoviePoster();
-              },
-            ),
+                scrollDirection: Axis.horizontal,
+                itemCount: movies.length,
+                itemBuilder: (_, int index) => _MoviePoster(
+                      movies[index],
+                      movie: movies[index],
+                    )),
           ),
         ],
       ),
@@ -32,7 +41,10 @@ class MovieSlider extends StatelessWidget {
 }
 
 class _MoviePoster extends StatelessWidget {
-  const _MoviePoster({Key? key}) : super(key: key);
+  final Movie movie;
+
+  const _MoviePoster(Movie movi, {Key? key, required this.movie})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -49,14 +61,14 @@ class _MoviePoster extends StatelessWidget {
                 borderRadius: BorderRadius.circular(20),
                 child: FadeInImage(
                     placeholder: AssetImage('assets/no-image.jpg'),
-                    image: NetworkImage('https://via.placeholder.com/300x400'),
+                    image: NetworkImage(movie.fullPosterImg),
                     width: 130,
                     height: 160,
                     fit: BoxFit.cover),
               ),
             ),
             SizedBox(height: 15),
-            Text('Star wards: el regreso del jedi maldito',
+            Text(movie.title,
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.center,
                 maxLines: 1)
