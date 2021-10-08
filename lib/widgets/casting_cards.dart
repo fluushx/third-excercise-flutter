@@ -24,7 +24,7 @@ class CastingCards extends StatelessWidget {
           );
         }
 
-        final cast = snapshot.data;
+        final List<Cast> cast = snapshot.data!;
 
         return Container(
           margin: EdgeInsets.only(bottom: 30),
@@ -34,7 +34,9 @@ class CastingCards extends StatelessWidget {
           child: ListView.builder(
             itemCount: 10,
             scrollDirection: Axis.horizontal,
-            itemBuilder: (BuildContext context, int index) => _CastCard(),
+            itemBuilder: (BuildContext context, int index) => _CastCard(
+              cast: cast[index],
+            ),
           ),
         );
       },
@@ -43,6 +45,9 @@ class CastingCards extends StatelessWidget {
 }
 
 class _CastCard extends StatelessWidget {
+  final Cast cast;
+
+  const _CastCard({Key? key, required this.cast}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -57,12 +62,12 @@ class _CastCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(20),
               child: FadeInImage(
                   placeholder: AssetImage('assets/no-image.jpg'),
-                  image: NetworkImage('https://via.placeholder.com/150x300'),
+                  image: NetworkImage(cast.fullProfilePath),
                   height: 150,
                   width: 100,
                   fit: BoxFit.cover)),
           SizedBox(height: 10),
-          Text('{actor.name este es el nombre del actor:}',
+          Text(cast.name,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.center)

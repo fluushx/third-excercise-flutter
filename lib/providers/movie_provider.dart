@@ -6,6 +6,7 @@ import 'package:third_project_moves/models/credits_response.dart';
 import 'package:third_project_moves/models/movie.dart';
 import 'package:third_project_moves/models/now_playing.dart';
 import 'package:third_project_moves/models/popular_response.dart';
+import 'package:third_project_moves/models/search_response.dart';
 
 class MoviesProvider extends ChangeNotifier {
   String _urlBase = 'api.themoviedb.org';
@@ -56,11 +57,23 @@ class MoviesProvider extends ChangeNotifier {
 
   Future<List<Cast>> getMovieCast(int movieId) async {
     //TODO: revisar si hay mapa
+
+    if (movieCast.containsKey(movieId)) return movieCast[movieId]!;
     final jsonData = await _getJsonData('3/movie/$movieId/credits');
     final creditsResponse = CreditResponse.fromJson(jsonData);
 
     movieCast[movieId] = creditsResponse.cast;
 
     return creditsResponse.cast;
+  }
+
+  Future<List<Movie>> searchMovies(String query) async {
+    final url = Uri.https(_urlBase, '3/search/movie',
+        {'api_key': _apiKey, 'language': _language, 'query': query});
+
+    // Await the http get response, then decode the json-formatted response.
+    final response = await http.get(url);
+    final searchResponse = SearchResponse.fromJson(response.body);
+    return searchResponse.results;
   }
 }
