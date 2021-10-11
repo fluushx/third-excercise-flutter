@@ -50,14 +50,7 @@ class MovieSearchDelegate extends SearchDelegate {
   Widget buildSuggestions(BuildContext context) {
     // TODO: implement buildSuggestions
     if (query.isEmpty) {
-      return Container(
-        child: Center(
-            child: Icon(
-          Icons.movie_creation_outlined,
-          size: 150,
-          color: Colors.black38,
-        )),
-      );
+      return _empyContainer();
     }
     final movieProvider = Provider.of<MoviesProvider>(context);
     return FutureBuilder(
@@ -85,6 +78,7 @@ class _MovieItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    movie.heroId = 'search-${movie.id}';
     return ListTile(
       leading: FadeInImage(
         placeholder: AssetImage('assets/no-image.jpg'),
